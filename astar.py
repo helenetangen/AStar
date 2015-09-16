@@ -8,6 +8,10 @@ print("HELENE")
 print("Test")
 
 
+def heleneBranchFunction():
+    return "Hello"
+
+
 # A-star algorithm.
 def aStar():
 
