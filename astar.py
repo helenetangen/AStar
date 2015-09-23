@@ -1,19 +1,22 @@
 __author__ = 'helenetangen'
 
 
-print("Hello World!")
-print("Hellersiono Jean!")
-print("Hello Jean!")
-print("HELENE")
-print("Test")
+
+class Board:
 
 
-def heleneBranchFunction():
-    return "Hello"
+    def makeBoard(self, height, width):
+        board = [[0 for x in range(height)] for x in range(width)]
+        return board
 
 
-# A-star algorithm.
-def aStar():
+def main():
+    b = Board()
+    b.board = b.makeBoard(5, 5)
+    for i in range(5):
+        b.board[i][i] = 1
+        print b.board[i][i]
 
 
-
+if __name__ == '__main__':
+    main()
