@@ -1,13 +1,9 @@
 __author__ = 'helenetangen'
 
 
-class Board:
-    def makeBoard(self, height, width):
-        board = [[0 for x in range(height)] for x in range(width)]
-        return board
-
-
 class Node:
+
+
     def __init__(self,parent,x,y,g,h):
         self.parent = parent
         self.x = x
@@ -31,11 +27,33 @@ class Search:
         self.start_y = start_y
         self.goal_x  = goal_x
         self.goal_y  = goal_y
+        self.board   = [[]]
+        self.make_board(self.size, barriers)
 
 
     def make_board(self, size, barriers):
         board = [[0 for x in range(size)] for x in range(size)]
         #Add barriers
+        for barrier in barriers:
+            x = barrier[0]
+            y = barrier[1]
+            x_length = barrier[2]
+            y_length = barrier[3]
+
+            for i in range(x, x + x_length):
+                for j in range(y, y + y_length):
+                    board[i][j] = 1
+        print self.print_board(board)
+
+
+
+    def print_board(self, board):
+        print "-------------"
+        for i in range(self.size):
+            for j in range(self.size):
+                print str(board[i][j]) + " ",
+            print "\n"
+        print "-------------"
 
     
     def search(self, start, end):
@@ -78,6 +96,7 @@ class Search:
         return children
 
 
+    '''
     def search(self, start, end):
         h = self.manhattan(start, end)
         node = Node(None, start, 0, h)
@@ -96,21 +115,18 @@ class Search:
                 return
             node = self.open.pop(0)
             self.closed.append(node)
-
-
                          
-            children = generate_children()
+            children = self.generate_children()
             for child in children:
             
             else:
                 node = self.open.pop(0)
                 self.closed.append(node)
-
+    '''
 
 
 def main():
-    s = Search()
-    s.search((1,1), (2,2))
+    search = Search(5, 0, 0, 4, 4, [[3, 0, 1, 3],[0, 3, 2, 2]])
 
 
 if __name__ == '__main__':
