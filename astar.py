@@ -60,9 +60,11 @@ class Search:
         h    = self.manhattan(start, end)
         node = Node(None, start, 0, h)
         self.open.append(node)
-       
-    def manhattan(self, node):
-        return (self.goal_x - node.x) + (self.goal_y - node.y)
+
+
+    def manhattan(self, x, y):
+        return (self.goal_x - x) + (self.goal_y - y)
+
 
     def generate_children(self, parent, size):
         children = []
@@ -70,27 +72,26 @@ class Search:
         x = parent.x + 1
         y = parent.y
         if parent.x + 1 < size:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
             children.append(child)
 
         x = parent.x - 1
         y = parent.y
         if parent.x + 1 < 0:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
             children.append(child)
 
         x = parent.x
         y = parent.y + 1
         if parent.y + 1 > size:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
             children.append(child)
 
         x = parent.x
         y = parent.y - 1
         if parent.x + 1 < 0:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
             children.append(child)
-
 
         return children
 
