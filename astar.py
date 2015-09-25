@@ -82,25 +82,25 @@ class Search:
         x = parent.x + 1
         y = parent.y
         if parent.x + 1 < self.size:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
+            child = Node(parent, x, y, parent.g + self.arc_cost(), self.manhattan(x, y))
             children.append(child)
 
         x = parent.x - 1
         y = parent.y
         if parent.x + 1 < 0:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
+            child = Node(parent, x, y, parent.g + self.arc_cost(), self.manhattan(x, y))
             children.append(child)
 
         x = parent.x
         y = parent.y + 1
         if parent.y + 1 > self.size:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
+            child = Node(parent, x, y, parent.g + self.arc_cost(), self.manhattan(x, y))
             children.append(child)
 
         x = parent.x
         y = parent.y - 1
         if parent.x + 1 < 0:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
+            child = Node(parent, x, y, parent.g + self.arc_cost(), self.manhattan(x, y))
             children.append(child)
 
         return children
@@ -125,6 +125,7 @@ class Search:
 
             #Get current best search state to search from
             node = self.open.pop(0)   # X = Top Node in sorted open
+            node.close()
             self.closed.append(node)
 
             #Check if you have found the goal state
@@ -142,13 +143,19 @@ class Search:
                          
                 node.children.append(child)
 
-                '''
+
                 if (not (child in self.open) and not (child in self.closed)):
-                         attach_and_eval(child,node)   # TODO: create attach_eval
                          self.open.insert(child)
-                         self.open.sort()#TODO Does this work? It don't know what to sort on.
-                #elif (
-                '''
+                         self.open = sorted(open, key=lambda Node : Node.f)
+                else:
+                    if node.g + self.arc_cost < child.g:
+                        child.setParent(node)
+                        child.setG(node.g + self.arc_cost)
+                        child.setF()
+                        if (child.closed):
+                            self.propagate_path_improvement(child)
+
+
 
 
 def main():
