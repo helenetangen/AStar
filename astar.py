@@ -28,7 +28,6 @@ def main():
 
     mynode = Node(None,0,0,0,0)
     print mynode.parent,mynode.children,mynode.Ch
-    print "test"
 
 
 if __name__ == '__main__':
