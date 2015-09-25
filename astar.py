@@ -90,9 +90,13 @@ class Search:
             if (node.state==end):
                 print "You got it!"
                 return
-        children = getChildren()
-        for child in children:
-            
+            node = self.open.pop(0)
+            self.closed.append(node)
+
+
+                         
+            children = generate_children()
+            for child in children:
             
             else:
                 node = self.open.pop(0)
