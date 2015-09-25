@@ -1,4 +1,4 @@
-__author__ = 'helenetangen'
+__author__ = 'helenetangen and jean'
 
 
 
@@ -90,9 +90,19 @@ class Search:
                 return                # X is a solution, return
                          
             children = self.generate_children()
+                         
             for child in children:
-                if (getNodeID(child) in hashTable):
+                         
+                if (getNodeID(child) in hashTable):    # TODO: create getNodeID and hashTable
                     child = hashTable(getNodeID(child))
+                         
+                getChildren(node).push(child)          # TODO: create getChildren
+
+                if (not (child in self.open) and not (child in self.closed)):
+                         attach_and_eval(child,node)   # TODO: create attach_eval
+                         self.open.insert(child)
+                         self.open.sort()
+                #elif (
                     
                 
          
