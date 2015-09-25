@@ -172,7 +172,7 @@ class Search:
 
 
                 if (not (child in self.open) and not (child in self.closed)):
-                         self.open.insert(child)
+                         self.open.append(child)
                          self.open = sorted(self.open, key=lambda Node : Node.f)
                 else:
                     if node.g + self.arc_cost < child.g:
