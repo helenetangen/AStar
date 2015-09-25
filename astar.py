@@ -21,27 +21,32 @@ class Node:
 
 class Search:
 
-    board  = [[0,0,0,1,1],
-              [0,0,0,1,1],
-              [0,0,0,0,0],
-              [1,1,1,0,0],
-              [0,0,0,0,0]]
-    open   = [] #Sort open
+
+    open   = []
     closed = []
-    goal_x = 4
-    goal_y = 4
 
 
-    def manhattan(self, start, end):
-        return (end[0] - start[0]) + (end[1] - start[1])
+    def __init__(self, size, start_x, start_y, goal_x, goal_y, barriers):
+        self.size    = size
+        self.start_x = start_x
+        self.start_y = start_y
+        self.goal_x  = goal_x
+        self.goal_y  = goal_y
+
+
+    def make_board(self, size, barriers):
+        board = [[0 for x in range(size)] for x in range(size)]
+        #Add barriers
+
     
     def search(self, start, end):
         h    = self.manhattan(start, end)
         node = Node(None, start, 0, h)
         self.open.append(node)
-       
-    def manhattan(self, node):
-        return (self.goal_x - node.x) + (self.goal_y - node.y)
+
+
+    def manhattan(self, x, y):
+        return (self.goal_x - x) + (self.goal_y - y)
 
 
     def generate_children(self, parent, size):
@@ -49,30 +54,30 @@ class Search:
 
         x = parent.x + 1
         y = parent.y
-        if parent.x + 1 < size:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
+        if parent.x + 1 < size and self.board[x][y] == 0:
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
             children.append(child)
 
         x = parent.x - 1
         y = parent.y
-        if parent.x + 1 < 0:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
+        if parent.x + 1 < 0 and self.board[x][y] == 0:
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
             children.append(child)
 
         x = parent.x
         y = parent.y + 1
-        if parent.y + 1 > size:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
+        if parent.y + 1 > size and self.board[x][y] == 0:
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
             children.append(child)
 
         x = parent.x
         y = parent.y - 1
-        if parent.x + 1 < 0:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
+        if parent.x + 1 < 0 and self.board[x][y] == 0:
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
             children.append(child)
 
-
         return children
+
 
     def search(self, start, end):
         h = self.manhattan(start, end)
