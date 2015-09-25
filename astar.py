@@ -7,7 +7,6 @@ __author__ = 'helenetangen and jean'
 
 class Node:
 
-
     def __init__(self,parent,x,y,g,h):
         self.parent = parent
         self.x = x
@@ -16,6 +15,19 @@ class Node:
         self.h = h      #Cost of getting to goal state from current state
         self.f = g + h  #Estimated total path cost
         self.children = []
+        self.closed=False
+
+    def setParent(parent):
+        self.parent=parent
+    def setG(g):
+        self.g=g
+    def setH(h):
+        self.h=h
+    def setF():
+        self.f=self.g+self.h
+    def close():
+        self.closed=True
+        
 
 
 class Search:
