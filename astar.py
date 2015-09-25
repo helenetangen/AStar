@@ -1,4 +1,4 @@
-__author__ = 'helenetangen'
+__author__ = 'helenetangen and jean'
 
 
 class Node:
@@ -17,7 +17,7 @@ class Node:
 class Search:
 
 
-    open   = []
+    open   = [] #Sort open
     closed = []
 
 
@@ -55,48 +55,47 @@ class Search:
             print "\n"
         print "-------------"
 
-    
+
     def search(self, start, end):
         h    = self.manhattan(start, end)
         node = Node(None, start, 0, h)
         self.open.append(node)
-
-
-    def manhattan(self, x, y):
-        return (self.goal_x - x) + (self.goal_y - y)
-
+       
+    def manhattan(self, node):
+        return (self.goal_x - node.x) + (self.goal_y - node.y)
 
     def generate_children(self, parent, size):
         children = []
 
         x = parent.x + 1
         y = parent.y
-        if parent.x + 1 < size and self.board[x][y] == 0:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
+        if parent.x + 1 < size:
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
             children.append(child)
 
         x = parent.x - 1
         y = parent.y
-        if parent.x + 1 < 0 and self.board[x][y] == 0:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
+        if parent.x + 1 < 0:
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
             children.append(child)
 
         x = parent.x
         y = parent.y + 1
-        if parent.y + 1 > size and self.board[x][y] == 0:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
+        if parent.y + 1 > size:
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
             children.append(child)
 
         x = parent.x
         y = parent.y - 1
-        if parent.x + 1 < 0 and self.board[x][y] == 0:
-            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
+        if parent.x + 1 < 0:
+            child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y, self.goal_x, self.goal_y)
             children.append(child)
+
 
         return children
 
 
-    '''
+    # AGENDA LOOP
     def search(self, start, end):
         h = self.manhattan(start, end)
         node = Node(None, start, 0, h)
@@ -107,8 +106,7 @@ class Search:
                 print "Failed. No nodes in open."
                 return
 
-            node = self.open.pop(0)   # X - Best Node in open
-            print "popped!"
+            node = self.open.pop(0)   # X = Top Node in sorted open
             self.closed.append(node)
             if (node.state==end):
                 print "You got it!"
@@ -122,7 +120,22 @@ class Search:
             else:
                 node = self.open.pop(0)
                 self.closed.append(node)
-    '''
+                return                # X is a solution, return
+                         
+            children = self.generate_children()
+                         
+            for child in children:
+                         
+                if (getNodeID(child) in hashTable):    # TODO: create getNodeID and hashTable
+                    child = hashTable(getNodeID(child))
+                         
+                getChildren(node).push(child)          # TODO: create getChildren
+
+                if (not (child in self.open) and not (child in self.closed)):
+                         attach_and_eval(child,node)   # TODO: create attach_eval
+                         self.open.insert(child)
+                         self.open.sort()
+                #elif (
 
 
 def main():
