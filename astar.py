@@ -25,26 +25,33 @@ class Search:
               [0,0,0,0,0],
               [1,1,1,0,0],
               [0,0,0,0,0]]
-    open   = []#Sort open
+    open   = [] #Sort open
     closed = []
 
 
     def manhattan(self, start, end):
         return (end[0] - start[0]) + (end[1] - start[1])
-
-
+    
     def search(self, start, end):
-        h = manhattan(start, end)
+        h    = self.manhattan(start, end)
         node = Node(None, start, 0, h)
-        open.append(node)
+        self.open.append(node)
+       
 
         while(node.state != end):
-            if len(open) == 0:
+            if (len(self.open) == 0):
                 print "Failed. No nodes in open."
                 return
-            else:
-                node = open.pop(0)
-                closed.append(node)
+            node = self.open.pop(0)   # X - Best Node in open
+            print "popped!"
+            self.closed.append(node)
+            if (node.state==end):
+                print "You got it!"
+                return
+        children = getChildren()
+        for child in children:
+            
+            
 
 
 
