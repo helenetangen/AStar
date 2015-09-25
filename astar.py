@@ -171,8 +171,8 @@ class Search:
 
 
 def main():
-    search = Search(5, 0, 0, 4, 4, [[3, 0, 1, 3],[0, 3, 2, 2]])
-    search.search()
+    a = Search(5, 0, 0, 4, 4, [[3, 0, 1, 3],[0, 3, 2, 2]])
+    a.search()
 
 
 if __name__ == '__main__':
