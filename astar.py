@@ -49,6 +49,11 @@ class Search:
         self.make_board(self.size, barriers)
 
 
+    def print_open(self):
+        for node in self.open:
+            print "(" + str(node.x) + ", " + str(node.y) + ")"
+
+
     def propagate_path_improvement(self, parent):
         for child in parent.children:
             if parent.g + self.arc_cost() < child.g:
@@ -118,7 +123,7 @@ class Search:
 
         x = parent.x
         y = parent.y + 1
-        if parent.y + 1 > self.size and self.board[x][y] == 0:
+        if parent.y + 1 < self.size and self.board[x][y] == 0:
             child = Node(parent, x, y, parent.g + self.arc_cost(), self.manhattan(x, y))
             children.append(child)
 
@@ -147,6 +152,9 @@ class Search:
                 print "Failed. No nodes in open."
                 return
 
+            #Print open
+            self.print_open()
+
             #Get current best search state to search from
             node = self.open.pop(0)   # X = Top Node in sorted open
             node.close()
@@ -154,6 +162,7 @@ class Search:
 
             #Print current board
             self.print_board(self.board, node.x, node.y)
+
 
             #Check if you have found the goal state
             if (node.x == self.goal_x and node.y == self.goal_y):
@@ -171,17 +180,17 @@ class Search:
                 node.children.append(child)
 
 
-                if (not (child in self.open) and not (child in self.closed)):
+                if not (id in self.dictionary):
                          self.open.append(child)
-                         self.open = sorted(self.open, key=lambda Node : Node.f)
+                         self.dictionary[str(child.x) + "-" + str(child.y)] = child
+                         #self.open = sorted(self.open, key=lambda Node : Node.f)
                 else:
-                    if node.g + self.arc_cost < child.g:
+                    if node.g + self.arc_cost() < child.g:
                         child.setParent(node)
                         child.setG(node.g + self.arc_cost)
                         child.setF()
                         if (child.closed):
                             self.propagate_path_improvement(child)
-
 
 
 
