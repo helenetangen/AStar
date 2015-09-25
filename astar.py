@@ -1,6 +1,10 @@
 __author__ = 'helenetangen and jean'
 
 
+#TODO Make hashtable
+#TODO Sort the open list
+
+
 class Node:
 
 
@@ -8,17 +12,18 @@ class Node:
         self.parent = parent
         self.x = x
         self.y = y
-        self.g = g
-        self.h = h
-        self.f = g + h
+        self.g = g      #Cost of getting from start to current state
+        self.h = h      #Cost of getting to goal state from current state
+        self.f = g + h  #Estimated total path cost
         self.children = []
 
 
 class Search:
 
 
-    open   = [] #Sort open
+    open   = []
     closed = []
+    dictionary = {}
 
 
     def __init__(self, size, start_x, start_y, goal_x, goal_y, barriers):
@@ -29,6 +34,19 @@ class Search:
         self.goal_y  = goal_y
         self.board   = [[]]
         self.make_board(self.size, barriers)
+
+
+    def propagate_path_improvement(self, parent):
+        for child in parent.children:
+            if parent.g + self.arc_cost() < child.g:
+                child.parent = parent
+                child.g = parent.g + self.arc_cost()
+                child.f = child.g + child.h
+                self.propagate_path_improvement(child)
+
+
+    def arc_cost(self):
+        return 1
 
 
     def make_board(self, size, barriers):
@@ -43,8 +61,6 @@ class Search:
             for i in range(x, x + x_length):
                 for j in range(y, y + y_length):
                     board[i][j] = 1
-        print self.print_board(board)
-
 
 
     def print_board(self, board):
@@ -60,12 +76,12 @@ class Search:
         return (self.goal_x - x) + (self.goal_y - y)
 
 
-    def generate_children(self, parent, size):
+    def generate_children(self, parent):
         children = []
 
         x = parent.x + 1
         y = parent.y
-        if parent.x + 1 < size:
+        if parent.x + 1 < self.size:
             child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
             children.append(child)
 
@@ -77,7 +93,7 @@ class Search:
 
         x = parent.x
         y = parent.y + 1
-        if parent.y + 1 > size:
+        if parent.y + 1 > self.size:
             child = Node(parent, x, y, parent.g + 1, self.manhattan(x, y))
             children.append(child)
 
@@ -91,50 +107,53 @@ class Search:
 
 
     # AGENDA LOOP
-    def search(self, start, end):
-        h = self.manhattan(start, end)
-        node = Node(None, start, 0, h)
-        self.open.append(node)
+    def search(self):
 
-        while(node.state != end):
+        #Make initial node
+        node = Node(None, self.start_x, self.start_y, 0, self.manhattan(self.start_x, self.start_y))
+        self.open.append(node)
+        self.dictionary[str(node.x) + "-" + str(node.y)] = node
+        #TODO Add node to dictionary
+
+        #Search for solution
+        while not (node.x == self.goal_x and node.y == self.goal_y):
+
+            #Check if the solution exist
             if (len(self.open) == 0):
                 print "Failed. No nodes in open."
                 return
 
+            #Get current best search state to search from
             node = self.open.pop(0)   # X = Top Node in sorted open
             self.closed.append(node)
-            if (node.state==end):
+
+            #Check if you have found the goal state
+            if (node.x == self.goal_x and node.y == self.goal_y):
                 print "You got it!"
                 return
-            node = self.open.pop(0)
-            self.closed.append(node)
-                         
-            children = self.generate_children()
-            for child in children:
-            
-            else:
-                node = self.open.pop(0)
-                self.closed.append(node)
-                return                # X is a solution, return
-                         
-            children = self.generate_children()
-                         
-            for child in children:
-                         
-                if (getNodeID(child) in hashTable):    # TODO: create getNodeID and hashTable
-                    child = hashTable(getNodeID(child))
-                         
-                getChildren(node).push(child)          # TODO: create getChildren
 
+            children = self.generate_children(node)
+                         
+            for child in children:
+
+                id = str(child.x) + "-" + str(child.y)
+                if (id in self.dictionary.keys()):
+                    child = self.dictionary.get(id)
+                         
+                node.children.append(child)
+
+                '''
                 if (not (child in self.open) and not (child in self.closed)):
                          attach_and_eval(child,node)   # TODO: create attach_eval
                          self.open.insert(child)
-                         self.open.sort()
+                         self.open.sort()#TODO Does this work? It don't know what to sort on.
                 #elif (
+                '''
 
 
 def main():
     search = Search(5, 0, 0, 4, 4, [[3, 0, 1, 3],[0, 3, 2, 2]])
+    search.search()
 
 
 if __name__ == '__main__':
