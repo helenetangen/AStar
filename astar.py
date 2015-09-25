@@ -71,7 +71,7 @@ class Search:
 
 
     def make_board(self, size, barriers):
-        board = [[0 for x in range(size)] for x in range(size)]
+        self.board = [[0 for x in range(size)] for x in range(size)]
         #Add barriers
         for barrier in barriers:
             x = barrier[0]
@@ -81,7 +81,7 @@ class Search:
 
             for i in range(x, x + x_length):
                 for j in range(y, y + y_length):
-                    board[i][j] = 1
+                    self.board[i][j] = 1
 
 
     def print_board(self, board):
@@ -89,6 +89,18 @@ class Search:
         for i in range(self.size):
             for j in range(self.size):
                 print str(board[i][j]) + " ",
+            print "\n"
+        print "-------------"
+
+
+    def print_board(self, board, x, y):
+        print "-------------"
+        for i in range(self.size):
+            for j in range(self.size):
+                if x == i and y == j:
+                    print "x ",
+                else:
+                    print str(board[i][j]) + " ",
             print "\n"
         print "-------------"
 
@@ -102,25 +114,25 @@ class Search:
 
         x = parent.x + 1
         y = parent.y
-        if parent.x + 1 < self.size:
+        if parent.x + 1 < self.size and self.board[x][y] == 0:
             child = Node(parent, x, y, parent.g + self.arc_cost(), self.manhattan(x, y))
             children.append(child)
 
         x = parent.x - 1
         y = parent.y
-        if parent.x + 1 < 0:
+        if parent.x + 1 < 0 and self.board[x][y] == 0:
             child = Node(parent, x, y, parent.g + self.arc_cost(), self.manhattan(x, y))
             children.append(child)
 
         x = parent.x
         y = parent.y + 1
-        if parent.y + 1 > self.size:
+        if parent.y + 1 > self.size and self.board[x][y] == 0:
             child = Node(parent, x, y, parent.g + self.arc_cost(), self.manhattan(x, y))
             children.append(child)
 
         x = parent.x
         y = parent.y - 1
-        if parent.x + 1 < 0:
+        if parent.x + 1 < 0 and self.board[x][y] == 0:
             child = Node(parent, x, y, parent.g + self.arc_cost(), self.manhattan(x, y))
             children.append(child)
 
@@ -134,7 +146,6 @@ class Search:
         node = Node(None, self.start_x, self.start_y, 0, self.manhattan(self.start_x, self.start_y))
         self.open.append(node)
         self.dictionary[str(node.x) + "-" + str(node.y)] = node
-        #TODO Add node to dictionary
 
         #Search for solution
         while not (node.x == self.goal_x and node.y == self.goal_y):
@@ -148,6 +159,9 @@ class Search:
             node = self.open.pop(0)   # X = Top Node in sorted open
             node.closed = True
             self.closed.append(node)
+
+            #Print current board
+            self.print_board(self.board, node.x, node.y)
 
             #Check if you have found the goal state
             if (node.x == self.goal_x and node.y == self.goal_y):
