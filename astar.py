@@ -1,7 +1,6 @@
 __author__ = 'helenetangen'
 
 
-
 class Board:
     def makeBoard(self, height, width):
         board = [[0 for x in range(height)] for x in range(width)]
