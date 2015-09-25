@@ -43,7 +43,6 @@ class Search:
     def manhattan(self, node):
         return (self.goal_x - node.x) + (self.goal_y - node.y)
 
-
     def generate_children(self, parent, size):
         children = []
 
@@ -74,6 +73,7 @@ class Search:
 
         return children
 
+    # AGENDA LOOP
     def search(self, start, end):
         h = self.manhattan(start, end)
         node = Node(None, start, 0, h)
@@ -84,25 +84,18 @@ class Search:
                 print "Failed. No nodes in open."
                 return
 
-            node = self.open.pop(0)   # X - Best Node in open
-            print "popped!"
+            node = self.open.pop(0)   # X = Top Node in sorted open
             self.closed.append(node)
             if (node.state==end):
-                print "You got it!"
-                return
-            node = self.open.pop(0)
-            self.closed.append(node)
-
-
+                return                # X is a solution, return
                          
-            children = generate_children()
+            children = self.generate_children()
             for child in children:
-            
-            else:
-                node = self.open.pop(0)
-                self.closed.append(node)
-
-
+                if (getNodeID(child) in hashTable):
+                    child = hashTable(getNodeID(child))
+                    
+                
+         
 
 def main():
     s = Search()
