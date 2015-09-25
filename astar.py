@@ -17,15 +17,15 @@ class Node:
         self.children = []
         self.closed=False
 
-    def setParent(parent):
+    def setParent(self,parent):
         self.parent=parent
-    def setG(g):
+    def setG(self,g):
         self.g=g
-    def setH(h):
+    def setH(self,h):
         self.h=h
-    def setF():
+    def setF(self):
         self.f=self.g+self.h
-    def close():
+    def close(self):
         self.closed=True
         
 
@@ -137,6 +137,7 @@ class Search:
 
             #Get current best search state to search from
             node = self.open.pop(0)   # X = Top Node in sorted open
+            print node.closed
             node.close()
             self.closed.append(node)
 
@@ -158,7 +159,7 @@ class Search:
 
                 if (not (child in self.open) and not (child in self.closed)):
                          self.open.insert(child)
-                         self.open = sorted(open, key=lambda Node : Node.f)
+                         self.open = sorted(self.open, key=lambda Node : Node.f)
                 else:
                     if node.g + self.arc_cost < child.g:
                         child.setParent(node)
