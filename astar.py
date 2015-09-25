@@ -56,12 +56,6 @@ class Search:
         print "-------------"
 
 
-    def search(self, start, end):
-        h    = self.manhattan(start, end)
-        node = Node(None, start, 0, h)
-        self.open.append(node)
-
-
     def manhattan(self, x, y):
         return (self.goal_x - x) + (self.goal_y - y)
 
