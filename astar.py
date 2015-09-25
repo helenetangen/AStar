@@ -17,14 +17,23 @@ class Node:
         self.children = []
         self.closed=False
 
+
     def setParent(parent):
         self.parent=parent
+
+
     def setG(g):
         self.g=g
+
+
     def setH(h):
         self.h=h
+
+
     def setF():
         self.f=self.g+self.h
+
+
     def close():
         self.closed=True
         
@@ -137,7 +146,7 @@ class Search:
 
             #Get current best search state to search from
             node = self.open.pop(0)   # X = Top Node in sorted open
-            node.close()
+            node.closed = True
             self.closed.append(node)
 
             #Check if you have found the goal state
@@ -157,8 +166,8 @@ class Search:
 
 
                 if (not (child in self.open) and not (child in self.closed)):
-                         self.open.insert(child)
-                         self.open = sorted(open, key=lambda Node : Node.f)
+                         self.open.append(child)
+                         #self.open = sorted(open, key=lambda Node : Node.f)
                 else:
                     if node.g + self.arc_cost < child.g:
                         child.setParent(node)
@@ -166,7 +175,6 @@ class Search:
                         child.setF()
                         if (child.closed):
                             self.propagate_path_improvement(child)
-
 
 
 
