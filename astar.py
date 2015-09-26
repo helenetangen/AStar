@@ -1,11 +1,8 @@
 __author__ = 'helenetangen and jean'
 
 
-#TODO Make hashtable
-#TODO Sort the open list
-
-
 class Node:
+
 
     def __init__(self,parent,x,y,g,h):
         self.parent = parent
@@ -20,12 +17,20 @@ class Node:
 
     def setParent(self,parent):
         self.parent=parent
+
+
     def setG(self,g):
         self.g=g
+
+
     def setH(self,h):
         self.h=h
+
+
     def setF(self):
         self.f=self.g+self.h
+
+
     def close(self):
         self.closed=True
         
@@ -191,7 +196,6 @@ class Search:
                         child.setF()
                         if (child.closed):
                             self.propagate_path_improvement(child)
-
 
 
 def main():
