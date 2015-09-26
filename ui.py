@@ -1,4 +1,4 @@
-__author__ = 'helenetangen'
+__author__ = 'helenetangen and jean'
 
 
 import time
@@ -39,8 +39,20 @@ class UI(tk.Frame):
 
 
 def main():
+    #root = tk.Tk()
+   # app = UI(root, 10, 10)
+  #  root.mainloop()
+
+    
     root = tk.Tk()
-    app = UI(root, 10, 10)
+
+    def callback(event):
+        print "clicked at", event.x, event.y
+
+    frame = tk.Frame(root, width=100, height=100)
+    frame.bind("<Button-1>", callback)
+    frame.pack()
+
     root.mainloop()
 
 
